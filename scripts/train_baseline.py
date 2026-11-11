@@ -148,21 +148,16 @@ def main():
         num_workers=0,
         generator=torch.Generator().manual_seed(args.seed),
     )
-    val_loader = DataLoader(
-        val_data, batch_size=128, shuffle=False, num_workers=0
-    )
+    val_loader = DataLoader(val_data, batch_size=128, shuffle=False, num_workers=0)
 
     model = SmallCNN().to(device)
-    optimizer = torch.optim.AdamW(
-        model.parameters(), lr=0.001, weight_decay=0.0001
-    )
+    optimizer = torch.optim.AdamW(model.parameters(), lr=0.001, weight_decay=0.0001)
     history = []
     best_accuracy = -1.0
 
     print(f"GPU: {configuration['gpu']}", flush=True)
     print(
-        f"Training: {len(train_data)} images | "
-        f"Validation: {len(val_data)} images",
+        f"Training: {len(train_data)} images | Validation: {len(val_data)} images",
         flush=True,
     )
 
@@ -202,9 +197,7 @@ def main():
 
     # Verify that saving and reloading preserves predictions.
     restored = SmallCNN().to(device)
-    saved = torch.load(
-        output / "latest.pt", map_location=device, weights_only=True
-    )
+    saved = torch.load(output / "latest.pt", map_location=device, weights_only=True)
     restored.load_state_dict(saved["model_state"])
     restored.eval()
     model.eval()
